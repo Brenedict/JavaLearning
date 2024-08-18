@@ -33,7 +33,9 @@ public class GameBoard {
     void play(char player, int location) {
         record[location - 1] = player;
         display();
-    } 
+    }
+    
+    
 
     // public static void main(String[] args) {
     //     GameBoard game = new GameBoard();

@@ -2,6 +2,7 @@ import java.util.*;
 import java.util.Random;
 
 public class App {
+
     public static void main(String[] args) throws Exception {
         GameBoard gameBoard = new GameBoard();
         Scanner input = new Scanner(System.in);
@@ -17,21 +18,26 @@ public class App {
                 System.out.print("Where to place: ");
                 pos = input.nextInt();
             } while(isValid(gameBoard, pos) != true);         
+
             gameBoard.play('x', pos);
             player.add(pos);
-            checkWin(player);
+            checkWin(player, "Player");
             
             Thread.sleep(1500);
             // Bot Generated Turn Loop
             do {
                 pos = random.nextInt(9) + 1;
             } while(isValid(gameBoard, pos) != true);
+
             gameBoard.play('o', pos);
             bot.add(pos);
+            checkWin(bot, "Computer");
 
-            System.out.flush();
-            turns++;    
-            checkWin(bot);
+            turns++;
+            
+            if(turns >= 5) {
+                resetGame(gameBoard, player, bot, turns);
+            }
 
         }
     }
@@ -44,7 +50,7 @@ public class App {
         }
     }
 
-    public static boolean checkWin(ArrayList<Integer> player) {
+    public static void checkWin(ArrayList<Integer> player, String user) {
         
         ArrayList<List> winningCombinations = new ArrayList<List>();
         List topRow = Arrays.asList(1, 2, 3);
@@ -67,11 +73,21 @@ public class App {
 
         for(List list : winningCombinations) {
             if(player.containsAll(list) != false) {
-                System.out.println("WINN");
-                return true;
+                System.out.printf("%s wins!", user);
+                System.exit(0);
             }
         }
-        return false;
     }
+    
+    public static void resetGame(GameBoard gameBoard, ArrayList<Integer> playerRecord, ArrayList<Integer> botRecord, int turns) {
+        for(int i = 0; i < gameBoard.record.length ; i++) {
+            gameBoard.record[i] = ' ';
+        }
 
+        turns = 0;
+        playerRecord.clear();
+        botRecord.clear();
+        
+        System.out.println("\nNew Game:\n");
+    }
 }
