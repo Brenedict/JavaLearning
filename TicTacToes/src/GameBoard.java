@@ -34,11 +34,5 @@ public class GameBoard {
         record[location - 1] = player;
         display();
     }
-    
-    
 
-    // public static void main(String[] args) {
-    //     GameBoard game = new GameBoard();
-    //     game.display();
-    // }
 }

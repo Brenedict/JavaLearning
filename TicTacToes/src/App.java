@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.Random;
 
 public class App {
 
@@ -11,23 +10,42 @@ public class App {
         ArrayList<Integer> bot = new ArrayList<Integer>();
 
         int pos, turns = 0;
+
+        gameBoard.display();
         
         while(true) {
             // Player Turn Loop
-            do {
-                System.out.print("Where to place: ");
+            while (true) {
+                System.out.print("Pos (1-9): ");
                 pos = input.nextInt();
-            } while(isValid(gameBoard, pos) != true);         
+
+                if(pos <= 0 || pos >= 10) {
+                    System.out.println("\nCell out of bounds!\n");
+                    continue;
+                }
+
+                if(isValid(gameBoard, pos, "player")) {
+                    break;
+                }
+            }         
 
             gameBoard.play('x', pos);
             player.add(pos);
             checkWin(player, "Player");
             
+            turns++;
+
             Thread.sleep(1500);
             // Bot Generated Turn Loop
+            
+            if(turns >= 8) {
+                turns = 0; 
+                resetGame(gameBoard, player, bot);
+            }
+
             do {
                 pos = random.nextInt(9) + 1;
-            } while(isValid(gameBoard, pos) != true);
+            } while(isValid(gameBoard, pos, "bot") != true);
 
             gameBoard.play('o', pos);
             bot.add(pos);
@@ -35,15 +53,13 @@ public class App {
 
             turns++;
             
-            if(turns >= 5) {
-                resetGame(gameBoard, player, bot, turns);
-            }
 
         }
     }
 
-    public static boolean isValid(GameBoard gameBoard, int pos) {
+    public static boolean isValid(GameBoard gameBoard, int pos, String player) {
         if(gameBoard.record[pos-1] != ' ') {
+            if (player.equals("player")) System.out.println("\nThat cell is already occupied!\n");
             return false;
         } else {
             return true;
@@ -79,12 +95,11 @@ public class App {
         }
     }
     
-    public static void resetGame(GameBoard gameBoard, ArrayList<Integer> playerRecord, ArrayList<Integer> botRecord, int turns) {
+    public static void resetGame(GameBoard gameBoard, ArrayList<Integer> playerRecord, ArrayList<Integer> botRecord) {
         for(int i = 0; i < gameBoard.record.length ; i++) {
             gameBoard.record[i] = ' ';
         }
 
-        turns = 0;
         playerRecord.clear();
         botRecord.clear();
         
