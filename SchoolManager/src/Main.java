@@ -22,6 +22,9 @@ public class Main {
                 case 2:
                     newEntry();
                     break;
+                case 3:
+                    deleteEntry();
+                    break;
                 default:
                     System.out.println("\n\n!!Input off-range!!\n");
             }
@@ -51,5 +54,20 @@ public class Main {
         details = input.nextLine();
 
         database.insertNewRow(ID, difficulty, attempt, details);
+    }
+
+    public static void deleteEntry() throws SQLException {
+        int ID;
+        do {
+            try {
+                System.out.print("Search by Id: ");
+                ID = input.nextInt();
+
+            }
+            catch(Exception e) {
+                input.nextLine();
+                System.out.println("\n\n!!Input not an integer!!\n");
+            }
+        } while(true);
     }
 }
