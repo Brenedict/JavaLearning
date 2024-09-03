@@ -15,7 +15,7 @@ public class databaseUtil {
     }
 
     public void displayData() throws SQLException {
-        String sql = "Select * FROM " + DB_NAME +";";
+        String sql = "Select * FROM " + DB_NAME +" ORDER BY ID ASC;";
         Statement statement = connection.createStatement();
         ResultSet result = statement.executeQuery(sql);
         System.out.println("\n================================================================\n");
@@ -28,15 +28,25 @@ public class databaseUtil {
         result.close();
     }
 
-    public void displayDataByID(int ID) throws SQLException {
-        String sql = "SELECT * FROM " + DB_NAME + " WHERE ID = ?;";
+    public void displayData(String column, String value_search) throws SQLException {
+        String sql = "SELECT * FROM " + DB_NAME + " WHERE " + column + " = ? ORDER BY ID ASC;";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setInt(1, ID);
-        ResultSet result = preparedStatement.executeQuery();
-        if(result.next()) {
+        ResultSet result;
+        if(column.equals("ID")) {
+            int TEMP = Integer.parseInt(value_search);
+            preparedStatement.setInt(1, TEMP);
+            result = preparedStatement.executeQuery();
+        } else {
+            preparedStatement.setString(1, value_search);
+            result = preparedStatement.executeQuery();
+        }
+        while(result.next()) {
             printAllColumnValues(result);
         }
+
     }
+
+
     private void printAllColumnValues(ResultSet result) throws SQLException {
         int ID = result.getInt(1);
         String attempt = result.getString(2);
