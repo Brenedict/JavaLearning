@@ -1,5 +1,8 @@
 import javax.xml.transform.Result;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class databaseUtil {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/leettracker"; // Replace with your database name
@@ -28,6 +31,44 @@ public class databaseUtil {
         result.close();
     }
 
+    public void displayDataDifficulty() throws SQLException {
+        String sql = "Select * FROM " + DB_NAME +" ORDER BY ID;";
+        Statement statement = connection.createStatement();
+        ResultSet result = statement.executeQuery(sql);
+
+        ArrayList<List> easyDiff = new ArrayList<List>();
+        ArrayList<List> mediumDiff = new ArrayList<List>();
+        ArrayList<List> hardDiff = new ArrayList<List>();
+
+        while (result.next()) {
+            if(result.getString("Difficulty").equalsIgnoreCase("easy")) {
+                 easyDiff.add(Arrays.asList(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5)));
+            }
+            else if(result.getString("Difficulty").equalsIgnoreCase("medium")) {
+                mediumDiff.add(Arrays.asList(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5)));
+            }
+            else {
+                hardDiff.add(Arrays.asList(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5)));
+            }
+        }
+
+        System.out.println("\n================================================================\n");
+        System.out.println("Question ID\t\tDifficulty\t\tAttempt\t\t\t   Date");
+
+        int ID;
+        String attempt, difficulty, attemptDate;
+//ISSUE CAN'T REALLY ACCESSED INDIVIDUAL LIST ELEMENTS
+        for(List i : easyDiff) {
+            ID = i.get();
+            System.out.printf("   %4d\t\t\t%s\t\t\t%s\t\t\t%s\n", ID, attempt, difficulty, attemptDate);
+        }
+
+
+        System.out.println("\n================================================================\n");
+        statement.close();
+        result.close();
+    }
+
     public void displayData(String column, String value_search) throws SQLException {
         String sql = "SELECT * FROM " + DB_NAME + " WHERE " + column + " = ? ORDER BY ID ASC;";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -40,12 +81,16 @@ public class databaseUtil {
             preparedStatement.setString(1, value_search);
             result = preparedStatement.executeQuery();
         }
+        System.out.println("\n================================================================\n");
+        System.out.println("Question ID\t\tDifficulty\t\tAttempt\t\t\t   Date");
         while(result.next()) {
             printAllColumnValues(result);
         }
+        System.out.println("\n================================================================\n");
+        result.close();
+        preparedStatement.close();
 
     }
-
 
     private void printAllColumnValues(ResultSet result) throws SQLException {
         int ID = result.getInt(1);
