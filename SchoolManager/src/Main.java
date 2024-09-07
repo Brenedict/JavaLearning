@@ -12,30 +12,37 @@ public class Main {
         int menuConf = 0;
         database.connect();
         do {
-            System.out.println("LeetCode Log (Benedict)");
-            System.out.println(" (1) Display All Logs");
-            System.out.println(" (2) Insert New Log");
-            System.out.println(" (3) Delete Existing Log");
-            System.out.println(" (4) Search Logs With Parameters");
-            System.out.print("\n> ");
-            menuConf = input.nextInt();
-            input.nextLine();
-            switch (menuConf) {
-                case 1:
-                    database.displayData();
-                    fullDisplay();
-                    break;
-                case 2:
-                    newEntry();
-                    break;
-                case 3:
-                    deleteEntry();
-                    break;
-                case 4:
-                    searchAll();
-                    break;
-                default:
-                    System.out.println("\n\n!!Input off-range!!\n\n");
+            try {
+
+                System.out.println("LeetCode Log (Benedict)");
+                System.out.println(" (1) Display All Logs");
+                System.out.println(" (2) Insert New Log");
+                System.out.println(" (3) Delete Existing Log");
+                System.out.println(" (4) Search Logs With Parameters");
+                System.out.print("\n> ");
+                menuConf = input.nextInt();
+                input.nextLine();
+                switch (menuConf) {
+                    case 1:
+                        database.displayData();
+                        fullDisplay();
+                        break;
+                    case 2:
+                        newEntry();
+                        break;
+                    case 3:
+                        deleteEntry();
+                        break;
+                    case 4:
+                        searchAll();
+                        break;
+                    default:
+                        System.out.println("\n\n!!Input off-range!!\n\n");
+                }
+            }
+            catch(Exception e) {
+                input.nextLine();
+                System.out.println("\n\n!!Input not an integer!!\n\n");
             }
         } while (true);
     }
@@ -69,7 +76,7 @@ public class Main {
                 attempt = input.nextLine();
 
                 if (!attempt.equalsIgnoreCase("correct") && !attempt.equalsIgnoreCase("wrong")) {
-                    System.out.println("\n\n!! There is no such attempt parameter !!\n");
+                    System.out.println("\n\n!! There is no such attempt parameter !!\n\n");
                     continue;
                 }
 
@@ -84,7 +91,7 @@ public class Main {
 
             catch(Exception e) {
                 input.nextLine();
-                System.out.println("\n\n!!Input not an integer!!\n");
+                System.out.println("\n\n!!Input not an integer!!\n\n");
             }
         } while(menu.equalsIgnoreCase("Y"));
     }
@@ -117,11 +124,11 @@ public class Main {
                     case "Q":
                         break;
                     default:
-                        System.out.println("\n\n!!Not an option!!\n");
+                        System.out.println("\n\n!!Not an option!!\n\n");
                 }
             } catch (Exception e) {
                 input.nextLine();
-                System.out.println("\n\n!!Input not an integer!!\n");
+                System.out.println("\n\n!!Input not an integer!!\n\n");
             }
         } while (!conf.equalsIgnoreCase("Q"));
     }
@@ -157,7 +164,7 @@ public class Main {
 
                     catch (Exception e) {
                         input.nextLine();
-                        System.out.println("\n\n!! Input not an integer!!\n");
+                        System.out.println("\n\n!! Input not an integer!!\n\n");
                     }
 
                     System.out.print("Repeat operation (Y to repeat): ");
@@ -175,7 +182,7 @@ public class Main {
                     if (attempt.equalsIgnoreCase("correct") || attempt.equalsIgnoreCase("wrong")) {
                         database.displayData("Attempt", attempt);
                     } else {
-                        System.out.println("\n\n!! There is no such attempt parameter !!\n");
+                        System.out.println("\n\n!! There is no such attempt parameter !!\n\n");
                         continue;
                     }
 
@@ -196,7 +203,7 @@ public class Main {
                     if (diffs.contains(difficulty.toUpperCase())) {
                         database.displayData("Difficulty", difficulty);
                     } else {
-                        System.out.println("\n\n!! Difficulty does not exist !!\n");
+                        System.out.println("\n\n!! Difficulty does not exist !!\n\n");
                         continue;
                     }
 
@@ -225,12 +232,12 @@ public class Main {
                         day = input.nextInt();
 
                         if(days_31.contains(month) && (day <= 0 || day > 31)) {
-                            System.out.println("\n\n!! Month only has 31 days !!\n");
+                            System.out.println("\n\n!! Month only has 31 days !!\n\n");
                             continue;
                         }
 
                         else if(days_30.contains(month) && (day <= 0 || day > 30)) {
-                            System.out.println("\n\n!! Month only has 30 days !!\n");
+                            System.out.println("\n\n!! Month only has 30 days !!\n\n");
                             continue;
                         }
 
@@ -260,7 +267,7 @@ public class Main {
                 }
 
                 catch (Exception e) {
-                    System.out.println("\n\n!! Invalid input/s! !!\n");
+                    System.out.println("\n\n!! Invalid input/s! !!\n\n");
                     input.nextLine();
                 }
             }
@@ -273,10 +280,21 @@ public class Main {
     public static void fullDisplay() throws SQLException{
         String argument, conf = "Y";
         do {
-            System.out.println("Display options: ['NORMAL' | 'ID' | 'DIFFICULTY' | 'DATE']");
+            System.out.print("Display options: ['NORMAL' | 'DIFFICULTY' | 'DATE' | 'X' to quit ]\n> ");
             argument = input.nextLine();
-            if(argument.equalsIgnoreCase("DIFFICULTY")); {
+            if(argument.equalsIgnoreCase("X")) { return; }
+
+            else if(argument.equalsIgnoreCase("DIFFICULTY")) {
                 database.displayDataDifficulty();
+            }
+            else if(argument.equalsIgnoreCase("NORMAL")) {
+                database.displayData();
+            }
+            else if(argument.equalsIgnoreCase("DATE")) {
+                database.displayDataDate();
+            }
+            else {
+                System.out.println("\n\n!!Input not in the display options!!\n\n");
             }
         } while(conf.equalsIgnoreCase("Y"));
     }
