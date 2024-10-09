@@ -14,11 +14,12 @@ public class Main {
         do {
             try {
 
-                System.out.println("LeetCode Log (Benedict)");
+                System.out.println("LeetCode Log (Benedict - " + database.totalRow() + ")");
                 System.out.println(" (1) Display All Logs");
                 System.out.println(" (2) Insert New Log");
                 System.out.println(" (3) Delete Existing Log");
                 System.out.println(" (4) Search Logs With Parameters");
+                System.out.println(" (5) Disconnect");
                 System.out.print("\n> ");
                 menuConf = input.nextInt();
                 input.nextLine();
@@ -36,6 +37,9 @@ public class Main {
                     case 4:
                         searchAll();
                         break;
+                    case 5:
+                        database.disconnect();
+                        return;
                     default:
                         System.out.println("\n\n!!Input off-range!!\n\n");
                 }
@@ -48,7 +52,7 @@ public class Main {
     }
 
     public static void newEntry() throws SQLException {
-        int ID;
+        int ID, offset = 0;
         String difficulty, attempt, details, menu = "Y";
         do {
 
@@ -80,10 +84,14 @@ public class Main {
                     continue;
                 }
 
+                System.out.print("Date offset: ");
+                offset = input.nextInt();
+                input.nextLine();
+
                 System.out.println("Enter Question Description:");
                 details = input.nextLine();
 
-                database.insertNewRow(ID, difficulty.toUpperCase(), attempt.toUpperCase(), details);
+                database.insertNewRow(ID, difficulty.toUpperCase(), attempt.toUpperCase(), Math.abs(offset), details);
 
                 System.out.print("Repeat operation (Y to repeat): ");
                 menu = input.nextLine();

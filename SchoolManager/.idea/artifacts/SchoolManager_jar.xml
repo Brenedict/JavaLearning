@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SchoolManager:jar">
+    <output-path>D:/JB Files</output-path>
+    <root id="archive" name="SchoolManager.jar">
+      <element id="module-output" name="SchoolManager" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/mysql-connector-j-9.0.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

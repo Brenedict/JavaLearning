@@ -21,12 +21,12 @@ public class databaseUtil {
         String sql = "Select * FROM " + DB_NAME +" ORDER BY ID ASC;";
         Statement statement = connection.createStatement();
         ResultSet result = statement.executeQuery(sql);
-        System.out.println("\n================================================================\n");
-        System.out.println("Question ID\t\tDifficulty\t\tAttempt\t\t\t   Date");
-        while (result.next()) {
+        System.out.println("\n===================================================================================\n");
+        System.out.println("Question ID\t\tDifficulty\t\tAttempt\t\t\t   Date\t\t\t   Details");
+        while(result.next()) {
             printAllColumnValues(result);
         }
-        System.out.println("\n================================================================\n");
+        System.out.println("\n===================================================================================\n");
         statement.close();
         result.close();
     }
@@ -41,15 +41,16 @@ public class databaseUtil {
         ArrayList<difficultyResults> hardDiff = new ArrayList<difficultyResults>();
 
         int ID;
-        String attempt, difficulty, attemptDate;
+        String attempt, difficulty, attemptDate, details;
 
         while (result.next()) {
             ID = result.getInt(1);
             attempt = result.getString(2);
             difficulty = result.getString(3);
             attemptDate = result.getString(4);
+            details = result.getString(5);
 
-            difficultyResults TEMP = new difficultyResults(ID, attempt, difficulty, attemptDate);
+            difficultyResults TEMP = new difficultyResults(ID, attempt, difficulty, attemptDate, details);
 
             if(result.getString("Difficulty").equalsIgnoreCase("easy")) {
                 easyDiff.add(TEMP);
@@ -62,15 +63,20 @@ public class databaseUtil {
             }
         }
 
-        System.out.println("\n================================================================\n");
-        System.out.println("Question ID\t\tDifficulty\t\tAttempt\t\t\t   Date");
+        System.out.println("\n===================================================================================\n");
+        System.out.println("Question ID\t\tDifficulty\t\tAttempt\t\t\t   Date\t\t\t   Details");
+
+        String temp;
 
         for (difficultyResults value : easyDiff) {
             ID = value.getID();
             attempt = value.getAttempt();
             difficulty = value.getDifficulty();
             attemptDate = value.getAttemptDate();
-            System.out.printf("   %4d\t\t\t%s\t\t\t%s\t\t\t%s\n", ID, attempt, difficulty, attemptDate);
+            temp = value.getDetails();
+            details = (temp.length()<15)?temp:temp.substring(0, 15) + "...";
+
+            System.out.printf("   %4d\t\t\t%s\t\t\t%s\t\t\t%s\t\t%s\n", ID, attempt, difficulty, attemptDate, details);
         }
 
         for (difficultyResults value : mediumDiff) {
@@ -78,7 +84,10 @@ public class databaseUtil {
             attempt = value.getAttempt();
             difficulty = value.getDifficulty();
             attemptDate = value.getAttemptDate();
-            System.out.printf("   %4d\t\t\t%s\t\t\t%s\t\t\t%s\n", ID, attempt, difficulty, attemptDate);
+            temp = value.getDetails();
+            details = (temp.length()<15)?temp:temp.substring(0, 15) + "...";
+
+            System.out.printf("   %4d\t\t\t%s\t\t\t%s\t\t\t%s\t\t%s\n", ID, attempt, difficulty, attemptDate, details);
         }
 
         for (difficultyResults value : hardDiff) {
@@ -86,10 +95,13 @@ public class databaseUtil {
             attempt = value.getAttempt();
             difficulty = value.getDifficulty();
             attemptDate = value.getAttemptDate();
-            System.out.printf("   %4d\t\t\t%s\t\t\t%s\t\t\t%s\n", ID, attempt, difficulty, attemptDate);
+            temp = value.getDetails();
+            details = (temp.length()<15)?temp:temp.substring(0, 15) + "...";
+
+            System.out.printf("   %4d\t\t\t%s\t\t\t%s\t\t\t%s\t\t%s\n", ID, attempt, difficulty, attemptDate, details);
         }
 
-        System.out.println("\n================================================================\n");
+        System.out.println("\n===================================================================================\n");
         statement.close();
         result.close();
     }
@@ -106,12 +118,12 @@ public class databaseUtil {
             preparedStatement.setString(1, value_search);
             result = preparedStatement.executeQuery();
         }
-        System.out.println("\n================================================================\n");
-        System.out.println("Question ID\t\tDifficulty\t\tAttempt\t\t\t   Date");
+        System.out.println("\n===================================================================================\n");
+        System.out.println("Question ID\t\tDifficulty\t\tAttempt\t\t\t   Date\t\t\t   Details");
         while(result.next()) {
             printAllColumnValues(result);
         }
-        System.out.println("\n================================================================\n");
+        System.out.println("\n===================================================================================\n");
         result.close();
         preparedStatement.close();
 
@@ -122,12 +134,12 @@ public class databaseUtil {
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet result = preparedStatement.executeQuery();
 
-        System.out.println("\n================================================================\n");
-        System.out.println("Question ID\t\tDifficulty\t\tAttempt\t\t\t   Date");
+        System.out.println("\n===================================================================================\n");
+        System.out.println("Question ID\t\tDifficulty\t\tAttempt\t\t\t   Date\t\t\t   Details");
         while(result.next()) {
             printAllColumnValues(result);
         }
-        System.out.println("\n================================================================\n");
+        System.out.println("\n===================================================================================\n");
         result.close();
         preparedStatement.close();
     }
@@ -136,19 +148,23 @@ public class databaseUtil {
         String attempt = result.getString(2);
         String difficulty = result.getString(3);
         String attemptDate = result.getString(4);
-        String details = result.getString(5);
-        System.out.printf("   %4d\t\t\t%s\t\t\t%s\t\t\t%s\n", ID, attempt, difficulty, attemptDate);
+        String temp = result.getString(5);
+        String details = (temp.length()<15)?temp:temp.substring(0, 15) + "...";
+        System.out.printf("   %4d\t\t\t%s\t\t\t%s\t\t\t%s\t\t%s\n", ID, attempt, difficulty, attemptDate, details);
     }
-    public void insertNewRow(int ID, String difficulty, String attempt, String details) throws SQLException{
-        String sql = "INSERT INTO " + DB_NAME + " VALUES(?, ?, ?, CURRENT_DATE(), ?);";
+    public void insertNewRow(int ID, String difficulty, String attempt, int offset, String details) throws SQLException{
+        String sql = "INSERT INTO " + DB_NAME + " VALUES(?, ?, ?, DATE_SUB(CURRENT_DATE(), INTERVAL ? DAY), ?);";
+
         PreparedStatement prepStatement = connection.prepareStatement(sql);
+
         prepStatement.setInt(1, ID);
         prepStatement.setString(2, difficulty);
         prepStatement.setString(3, attempt);
-        prepStatement.setString(4, details);
+        prepStatement.setInt(4, offset);
+        prepStatement.setString(5, details);
 
         prepStatement.executeUpdate();
-        System.out.printf("Row successfully added ID#%d\n", ID);
+        System.out.printf("\nRow successfully added ID#%d\n\n", ID);
         prepStatement.close();
     }
 
@@ -173,11 +189,25 @@ public class databaseUtil {
         return false;
     }
 
+    public long totalRow() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM " + DB_NAME + ";";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        long res = 0;
+        while(resultSet.next()) {
+            res = resultSet.getLong(1);
+        }
+        preparedStatement.close();
+        resultSet.close();
+        return res;
+    }
 
     public void disconnect() throws SQLException {
         connection.close();
         System.out.println("Connection successfully disconnected...");
     }
+
+
 
 }
 
@@ -186,16 +216,19 @@ class difficultyResults {
     private String attempt;
     private String difficulty;
     private String attemptDate;
+    private String details;
 
-    difficultyResults(int ID, String attempt, String difficulty, String attemptDate) {
+    difficultyResults(int ID, String attempt, String difficulty, String attemptDate, String details) {
         this.ID = ID;
         this.attempt = attempt;
         this.difficulty = difficulty;
         this.attemptDate = attemptDate;
+        this.details = details;
     }
 
     public int getID() { return this.ID; }
     public String getAttempt() { return this.attempt; }
     public String getDifficulty() { return this.difficulty; }
     public String getAttemptDate() { return this.attemptDate; };
+    public String getDetails() { return this.details; }
 }
