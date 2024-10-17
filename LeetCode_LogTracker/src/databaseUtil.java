@@ -3,8 +3,8 @@ import java.util.ArrayList;
 
 public class databaseUtil {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/leettracker"; // Replace with your database name
-    private static final String DB_USERNAME; // Commented Out
-    private static final String DB_PASSWORD; // Commented out
+    private static final String DB_USERNAME = "root"; // Commented Out
+    private static final String DB_PASSWORD = "Benedict#28"; // Commented out
     private static final String DB_NAME = "leet_tracker_sheet";
     private Connection connection = null;
 
