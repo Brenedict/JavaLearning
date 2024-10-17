@@ -1,13 +1,10 @@
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class databaseUtil {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/leettracker"; // Replace with your database name
-    private static final String DB_USERNAME = "root"; // Replace with your MySQL username
-    private static final String DB_PASSWORD = "Benedict#28"; // Replace with your MySQL password
+    private static final String DB_USERNAME; // Commented Out
+    private static final String DB_PASSWORD; // Commented out
     private static final String DB_NAME = "leet_tracker_sheet";
     private Connection connection = null;
 
@@ -206,8 +203,6 @@ public class databaseUtil {
         connection.close();
         System.out.println("Connection successfully disconnected...");
     }
-
-
 
 }
 

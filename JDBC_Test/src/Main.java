@@ -23,7 +23,7 @@ public class Main {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "Benedict#28");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "SAMPLEUSER", "SAMPLEPASS");
             statement = connection.createStatement();
 
             result = statement.executeQuery("SELECT password FROM login WHERE username = '" + username + "';");
