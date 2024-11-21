@@ -20,12 +20,15 @@ public class Data {
     public double getX(int index) {
         return xValues.get(index);
     }
+
     public double getY(int index) {
         return yValues.get(index);
     }
+
     public double getZ(int index) {
-        return xValues.get(index);
+        return zValues.get(index);
     }
+
     public double getError(int index) {
         return errorValues.get(index);
     }

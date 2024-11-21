@@ -6,21 +6,10 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RectangleInsets;
-import org.jfree.ui.RefineryUtilities;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
-//
 public class Graph {
     final int WIDTH = 800;
     final int HEIGHT = 550;
@@ -33,10 +22,12 @@ public class Graph {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        //  Creating the 3 line charts
         ChartPanel chart1 = createLineChart(jacobi, true, "Jacobi Series", "Jacobi: k = " + jacobi.getSize());
         ChartPanel chart2 = createLineChart(gauss, false, "Gauss-Seidel Series", "Gauss-Seidel: k = " + gauss.getSize());
         ChartPanel chart3 = createLineChart(jacobi, gauss, "Jacobi Series","Gauss-Seidel Series", "Jacobi ("+jacobi.getSize()+") vs Gauss-Seidel ("+gauss.getSize()+")");
 
+        //  Creating a tab for each chart
         JPanel chart1Tab = new JPanel();
         JPanel chart2Tab = new JPanel();
         JPanel chart3Tab = new JPanel();
@@ -54,14 +45,19 @@ public class Graph {
         frame.setVisible(true);
     }
 
+    // Create chart function for chart 3 (Jacobi and Gauss-Seidel)
     private ChartPanel createLineChart(Data data1, Data data2, String series1, String series2, String title) {
         XYSeries seriesA = new XYSeries(series1);
         XYSeries seriesB = new XYSeries(series2);
 
         // Add data points for both series
+
+        // Series 1: Jacobi Dataset
         for (int i = 0; i < data1.getSize(); i++) {
             seriesA.add(i + 1, data1.getError(i));
         }
+
+        // Series 2: Gauss-Seidel Dataset
         for (int i = 0; i < data2.getSize(); i++) {
             seriesB.add(i + 1, data2.getError(i));
         }
